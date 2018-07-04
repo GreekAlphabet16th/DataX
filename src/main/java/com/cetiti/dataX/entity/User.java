@@ -1,10 +1,13 @@
 package com.cetiti.dataX.entity;
 
+
+import com.cetiti.dataX.enums.Sex;
+
 public class User {
 
     private int id;
     private String name;
-    private String sex;
+    private Sex sex;
 
     public int getId() {
         return id;
@@ -14,7 +17,7 @@ public class User {
         return name;
     }
 
-    public String getSex() {
+    public Sex getSex() {
         return sex;
     }
 
@@ -26,7 +29,7 @@ public class User {
         this.name = name;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
