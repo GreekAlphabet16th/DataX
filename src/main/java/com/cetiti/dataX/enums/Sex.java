@@ -2,7 +2,7 @@ package com.cetiti.dataX.enums;
 
 public enum Sex {
 
-    MALE(1,"男"), FEMALE(2,"女");
+    MALE(0,"男"), FEMALE(1,"女");
     private int id;
     private String name;
 
@@ -28,10 +28,11 @@ public enum Sex {
     }
 
     public static Sex getSex(int id){
-        if (id == 1){
-            return MALE;
-        }else {
-            return FEMALE;
+        for(Sex sex : Sex.values()){
+            if(sex.getId() == id){
+                return sex;
+            }
         }
+        return null;
     }
 }

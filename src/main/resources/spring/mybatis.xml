@@ -27,7 +27,7 @@
         </environment>
     </environments>
     <mappers>
-        <!--<mapper resource="mapper/UserMapper.xml"/>-->
-        <mapper url="file:///D:/zly7056/Desktop/UserMapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
+        <!--<mapper url="file:///D:/zly7056/Desktop/UserMapper.xml"/>-->
     </mappers>
 </configuration>

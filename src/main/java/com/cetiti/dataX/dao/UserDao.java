@@ -1,10 +1,10 @@
-package com.cetiti.dataX.service;
+package com.cetiti.dataX.dao;
 
 import com.cetiti.dataX.entity.User;
 
 import java.util.List;
 
-public interface UserMapper {
+public interface UserDao {
 
     List<User> selectUserList();
 
