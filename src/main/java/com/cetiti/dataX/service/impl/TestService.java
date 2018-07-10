@@ -1,33 +1,36 @@
 package com.cetiti.dataX.service.impl;
 
-import com.cetiti.core.dataSource.XMLDataCenterConfigBuilder;
+import com.cetiti.core.dataSource.DataCenterBuilder;
 import com.cetiti.dataX.dao.DataPropertiesDao;
-import com.cetiti.dataX.entity.User;
+import com.cetiti.dataX.entity.DataProperties;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class TestService {
 
-    XMLDataCenterConfigBuilder xmlDataCenterConfigBuilder = new XMLDataCenterConfigBuilder();
+    DataCenterBuilder dataCenterBuilder = new DataCenterBuilder();
     @Autowired
-    private DataPropertiesDao dataPropertiesDao;
+    private DataPropertiesDao DataPropertiesDao;
 
     public List<Map> testServiceData(){
         SqlSession sqlSession = null;
         List<Map> list = new ArrayList<>();
         try {
-            SqlSessionFactory sqlSessionFactory = xmlDataCenterConfigBuilder.sqlSessionFactoryBuild(dataPropertiesDao.getDataProperties(1));
+            List<String> mappers = new ArrayList<>();
+            mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
+            DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(2));
+            SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
             sqlSession = sqlSessionFactory.openSession();
-            User user = new User();
-            user.setId(121);
-            list = sqlSession.selectList("com.cetiti.dataX.dao.UserDao.getUser",user);
+            Map<String, Object> params= new HashMap<>();
+            params.put("id",121);
+            params.put("name","test121");
+            list = sqlSession.selectList("com.cetiti.dataX.dao.UserDao.getUser",params);
         }finally {
             sqlSession.close();
         }

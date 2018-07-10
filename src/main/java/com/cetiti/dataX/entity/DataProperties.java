@@ -1,5 +1,7 @@
 package com.cetiti.dataX.entity;
 
+import java.math.BigDecimal;
+
 /**
  * 描述：数据源实体类
  * @author zhouliyu
@@ -7,14 +9,19 @@ package com.cetiti.dataX.entity;
  * */
 public class DataProperties {
 
-    private int dataId;
+    private BigDecimal dataId;
+    private String dataCenter;
     private String driver;
     private String url;
     private String userName;
     private String passWord;
 
-    public int getDataId() {
+    public BigDecimal getDataId() {
         return dataId;
+    }
+
+    public String getDataCenter() {
+        return dataCenter;
     }
 
     public String getDriver() {
@@ -33,8 +40,12 @@ public class DataProperties {
         return passWord;
     }
 
-    public void setDataId(int dataId) {
+    public void setDataId(BigDecimal dataId) {
         this.dataId = dataId;
+    }
+
+    public void setDataCenter(String dataCenter) {
+        this.dataCenter = dataCenter;
     }
 
     public void setDriver(String driver) {
@@ -57,6 +68,7 @@ public class DataProperties {
     public String toString() {
         return "DataProperties{" +
                 "dataId=" + dataId +
+                ", dataCenter='" + dataCenter + '\'' +
                 ", driver='" + driver + '\'' +
                 ", url='" + url + '\'' +
                 ", userName='" + userName + '\'' +

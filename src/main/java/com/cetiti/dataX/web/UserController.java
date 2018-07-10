@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private DataPropertiesDao dataPropertiesDao;
+    private DataPropertiesDao DataPropertiesDao;
     @Autowired
     private TestService testService;
 
@@ -41,8 +41,8 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/{dataId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public void getUserList(DataProperties param){
-        DataProperties dataProperties = dataPropertiesDao.getDataProperties(param.getDataId());
-        System.out.println(dataProperties.toString());
+        DataProperties DataProperties = DataPropertiesDao.getDataProperties(param.getDataId());
+        System.out.println(DataProperties.toString());
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)

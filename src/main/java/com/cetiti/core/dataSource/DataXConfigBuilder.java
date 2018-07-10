@@ -2,8 +2,6 @@ package com.cetiti.core.dataSource;
 
 import org.apache.ibatis.builder.BaseBuilder;
 import org.apache.ibatis.builder.BuilderException;
-import org.apache.ibatis.builder.xml.XMLMapperBuilder;
-import org.apache.ibatis.builder.xml.XMLMapperEntityResolver;
 import org.apache.ibatis.datasource.DataSourceFactory;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.executor.loader.ProxyFactory;
@@ -24,7 +22,6 @@ import org.apache.ibatis.type.JdbcType;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -347,19 +344,18 @@ public class DataXConfigBuilder extends BaseBuilder {
 
     }
 
-    private void mapperElement(List<String> mappers) throws Exception {
-        List<String> parent = this.mappers2Parent(mappers);
+    private void mapperElement(List<String> parent) throws Exception {
         if (!parent.isEmpty()) {
             Iterator i$ = parent.iterator();
             while(true) {
                 while(i$.hasNext()) {
-                    String resource = (String)i$.next();
-                    XMLMapperBuilder mapperParser;
+                    String url = (String)i$.next();
+                    DataXMapperBuilder mapperParser;
                     InputStream inputStream;
-                    if (resource != null) {
-                            ErrorContext.instance().resource(resource);
-                            inputStream = Resources.getResourceAsStream(resource);
-                            mapperParser = new XMLMapperBuilder(inputStream, this.configuration, resource, this.configuration.getSqlFragments());
+                    if (url != null) {
+                            ErrorContext.instance().resource(url);
+                            inputStream = Resources.getUrlAsStream(url);
+                            mapperParser = new DataXMapperBuilder(inputStream, this.configuration, url, this.configuration.getSqlFragments());
                             mapperParser.parse();
                     }
                 }
@@ -379,17 +375,5 @@ public class DataXConfigBuilder extends BaseBuilder {
         }
     }
 
-    private List<String> mappers2Parent(List<String> mappers){
-        List<String> list = new ArrayList<>();
-        if(!mappers.isEmpty()){
-            Iterator i$ = mappers.iterator();
-            while (i$.hasNext()){
-                StringBuffer sb = new StringBuffer("mapper/");
-                sb.append(i$.next());
-                list.add(sb.toString());
-            }
-        }
-        return list;
-    }
     
 }

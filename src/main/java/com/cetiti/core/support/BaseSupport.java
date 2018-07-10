@@ -177,6 +177,27 @@ public class BaseSupport {
     }
 
     /**
+     * 读取配置 properties 文件中的值，读取 classpath 下 setting.properties 配置文件<br>
+     *
+     * @param key 资源文件中的 key 值
+     * @return String 读取到的 key 对应的 value 值
+     */
+    public String propertiesValue(String key) {
+        if (this.isNull(key))
+            return null;
+        try {
+            // 获取需要读取的properties文件路径
+            Properties prop = new Properties();
+            InputStream inputStream = this.getClass().getResourceAsStream("properties/setting.properties");
+            prop.load(inputStream);
+            return prop.getProperty(key);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 读取指定路径 properties 文件中的值，会从 classpath 路径下进行查找资源文件<br>
      *
      * @param resource 资源文件路径（对应 classpath 中的路径）

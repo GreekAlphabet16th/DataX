@@ -16,7 +16,7 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args){
         String propertiesPath = "properties/db.properties";
-        String resource = "spring/mybatis.xml";
+        String resource = "spring/dataCenter.xml";
         SqlSession sqlSession = null;
         Properties properties = null;
         try {
@@ -45,7 +45,7 @@ public class Main {
             //实现类
             List<Map> list = sqlSession.selectList("com.cetiti.dataX.dao.UserDao.getUser",user);
             System.out.println(list.toString());
-            //dataProperties
+            //DataPropertiess
 
         } finally {
             sqlSession.close();

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cetiti.dataX.dao.DataPropertiesDao">
+    <select id="DataPropertiesList" resultType="DataProperties">
+      SELECT data_id,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES
+    </select>
+
+    <select id="getDataProperties" resultType="DataProperties">
+        SELECT data_id,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES WHERE  data_id = #{dataId}
+    </select>
+
+    <insert id="insertDataProperties" parameterType="DataProperties">
+        INSERT INTO DATA_PROPERTIES (data_id,data_center,driver,url,user_name,pass_word)
+        VALUES (#{dataId},#{dataCenter},#{driver},#{url},#{userName},#{passWord})
+    </insert>
+
+    <update id="updateDataProperties" parameterType="DataProperties">
+        UPDATE DATA_PROPERTIES
+        <set>
+            <if test="dataCenter != null">
+                data_center = #{dataCenter},
+            </if>
+            <if test="driver != null">
+                driver = #{driver},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="passWord != null">
+                passWord = #{passWord},
+            </if>
+        </set>
+        WHERE data_id = #{dataId}
+    </update>
+
+    <delete id="deleteDataProperties" parameterType="java.lang.Integer">
+        DELETE FROM DATA_PROPERTIES
+        WHERE data_id = #{dataId}
+    </delete>
+</mapper>
