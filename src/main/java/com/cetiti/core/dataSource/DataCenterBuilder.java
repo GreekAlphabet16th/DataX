@@ -14,8 +14,7 @@ import java.util.Properties;
 
 public class DataCenterBuilder {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(DataCenterBuilder.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataCenterBuilder.class);
     private static final String DEFAULT_MYBATIS_CONFIG = "spring/dataCenter.xml";
 
     public SqlSessionFactory sqlSessionFactoryBuild(DataProperties DataProperties,List<String> mappers){

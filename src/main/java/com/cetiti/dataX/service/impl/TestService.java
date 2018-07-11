@@ -24,13 +24,13 @@ public class TestService {
         try {
             List<String> mappers = new ArrayList<>();
             mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
-            DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(2));
+            DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(3));
             SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
             sqlSession = sqlSessionFactory.openSession();
             Map<String, Object> params= new HashMap<>();
             params.put("id",121);
             params.put("name","test121");
-            list = sqlSession.selectList("com.cetiti.dataX.dao.UserDao.getUser",params);
+            list = sqlSession.selectList("com.cetiti.dataX.dao.UserDao.selectUserList",null);
         }finally {
             sqlSession.close();
         }

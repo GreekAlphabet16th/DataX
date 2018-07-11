@@ -15,7 +15,7 @@ public class XMLMapperEntityResolver implements EntityResolver {
     private static final String MYBATIS_CONFIG_SYSTEM = "mybatis-3-config.dtd";
     private static final String MYBATIS_MAPPER_SYSTEM = "datax-mapper.dtd";
     private static final String MYBATIS_CONFIG_DTD = "org/apache/ibatis/builder/xml/mybatis-3-config.dtd";
-    private static final String MYBATIS_MAPPER_DTD = "com/cetiti/core/dataSource/dataX-mapper.dtd";
+    private static final String MYBATIS_MAPPER_DTD = "com/cetiti/core/dataSource/datax-mapper.dtd";
 
     public XMLMapperEntityResolver() {
     }
