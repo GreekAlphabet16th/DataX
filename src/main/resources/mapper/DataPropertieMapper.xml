@@ -3,21 +3,24 @@
 
 <mapper namespace="com.cetiti.dataX.dao.DataPropertiesDao">
     <select id="DataPropertiesList" resultType="DataProperties">
-      SELECT data_id,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES
+      SELECT data_id,sql_type,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES
     </select>
 
     <select id="getDataProperties" resultType="DataProperties">
-        SELECT data_id,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES WHERE  data_id = #{dataId}
+        SELECT data_id,sql_type,data_center,driver,url,user_name,pass_word from DATA_PROPERTIES WHERE  data_id = #{dataId}
     </select>
 
     <insert id="insertDataProperties" parameterType="DataProperties">
-        INSERT INTO DATA_PROPERTIES (data_id,data_center,driver,url,user_name,pass_word)
-        VALUES (#{dataId},#{dataCenter},#{driver},#{url},#{userName},#{passWord})
+        INSERT INTO DATA_PROPERTIES (data_id,sql_type,data_center,driver,url,user_name,pass_word)
+        VALUES (#{dataId},#{sqlType},#{dataCenter},#{driver},#{url},#{userName},#{passWord})
     </insert>
 
     <update id="updateDataProperties" parameterType="DataProperties">
         UPDATE DATA_PROPERTIES
         <set>
+            <if test="sqlType != null">
+                sql_type = #{sqlType},
+            </if>
             <if test="dataCenter != null">
                 data_center = #{dataCenter},
             </if>

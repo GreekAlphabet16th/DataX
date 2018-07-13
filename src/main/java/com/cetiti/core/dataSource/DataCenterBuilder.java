@@ -32,10 +32,11 @@ public class DataCenterBuilder {
 
     private Properties propertiesLoad(DataProperties DataProperties){
         Properties properties = new Properties();
+        properties.setProperty("sqlType", DataProperties.getSqlType());
         properties.setProperty("driver", DataProperties.getDriver());
         properties.setProperty("url", DataProperties.getUrl());
-        properties.setProperty("username", DataProperties.getUserName());
-        properties.setProperty("password", DataProperties.getPassWord());
+        properties.setProperty("userName", DataProperties.getUserName());
+        properties.setProperty("passWord", DataProperties.getPassWord());
         return properties;
     }
 

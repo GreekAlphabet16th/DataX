@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class DataProperties {
 
     private BigDecimal dataId;
+    private String sqlType;
     private String dataCenter;
     private String driver;
     private String url;
@@ -18,6 +19,10 @@ public class DataProperties {
 
     public BigDecimal getDataId() {
         return dataId;
+    }
+
+    public String getSqlType() {
+        return sqlType;
     }
 
     public String getDataCenter() {
@@ -44,6 +49,10 @@ public class DataProperties {
         this.dataId = dataId;
     }
 
+    public void setSqlType(String sqlType) {
+        this.sqlType = sqlType;
+    }
+
     public void setDataCenter(String dataCenter) {
         this.dataCenter = dataCenter;
     }
@@ -68,6 +77,7 @@ public class DataProperties {
     public String toString() {
         return "DataProperties{" +
                 "dataId=" + dataId +
+                ", sqlType='" + sqlType + '\'' +
                 ", dataCenter='" + dataCenter + '\'' +
                 ", driver='" + driver + '\'' +
                 ", url='" + url + '\'' +

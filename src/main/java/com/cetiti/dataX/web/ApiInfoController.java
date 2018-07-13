@@ -1,16 +1,15 @@
 package com.cetiti.dataX.web;
 
 import com.cetiti.core.controller.BaseController;
+import com.cetiti.core.support.PageModel;
 import com.cetiti.dataX.entity.ApiInfo;
+import com.cetiti.dataX.entity.OpenApi;
 import com.cetiti.dataX.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -24,11 +23,22 @@ public class ApiInfoController extends BaseController {
     @Autowired
     private ApiService apiService;
 
-    @RequestMapping(value = "/rest/{mapper}/{method}/{params}", method = RequestMethod.GET)
+    /**
+     * rest方式接口访问 http://Endpoint/api/?format=rest&pageNum&pageSize&Parameters
+     * 示例：http://localhost:8080/dataX/api/com.cetiti.dataX.dao.UserDao/selectUserList/?format=rest&pageNum=1&pageSize=10
+     * */
+    @RequestMapping(value = "/{mapper}/{method}/", method = RequestMethod.POST)
     @ResponseBody
-    public List<Map> queryApiMethodResult(@PathVariable("mapper") String mapper,
+    public PageModel<Map> apiMethodResult(@PathVariable("mapper") String mapper,
                                           @PathVariable("method")String method,
-                                          @PathVariable("params")String params){
-        return apiService.RestApiService(mapper,method,params);
+                                          @RequestParam Map<String,String> Parameters){
+        String format = Parameters.get("format");
+        if(format.equals("rest")){
+            PageModel resultList = apiService.RestApiService(mapper,method,Parameters);
+            return resultList;
+        }else {
+            return null;
+        }
+
     }
 }

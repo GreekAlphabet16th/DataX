@@ -2,8 +2,10 @@ package com.cetiti.dataX.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import com.cetiti.core.controller.BaseController;
 import com.cetiti.core.dataSource.DataCenterBuilder;
+import com.cetiti.core.support.BaseSupport;
+import com.cetiti.core.support.PageModel;
 import com.cetiti.dataX.dao.DataPropertiesDao;
 import com.cetiti.dataX.entity.DataProperties;
 import org.apache.ibatis.session.SqlSession;
@@ -22,7 +24,7 @@ import java.util.*;
  *
  * */
 @Service
-public class ApiService {
+public class ApiService extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
 
@@ -33,24 +35,42 @@ public class ApiService {
 
 
     /**
-     * rest方式接口访问
+     * rest方式接口访问 http://Endpoint/rest/mapper/method/?Parameters
+     * @param mapper 接口名
+     * @param method 方法名
+     * @param Parameters 传参
+     * @return 数据集
      * */
-    public List<Map> RestApiService(String mapper, String method, String params){
-        String queryMethod = mapper+"."+method;
-        SqlSession sqlSession = null;
-        Map<String,String> methodParams = this.jsonMapResolver(params);
-        List<Map> list;
-        try {
-            List<String> mappers = new ArrayList<>();
-            mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
-            DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(2));
-            SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
-            sqlSession = sqlSessionFactory.openSession();
-            list = sqlSession.selectList(queryMethod,methodParams);
-        }finally {
-            sqlSession.close();
+    public PageModel<Map> RestApiService(String mapper, String method, Map<String,String> Parameters){
+        if(!isNull(mapper) && !isNull(method)){
+            String apiMethod = new StringBuffer(mapper+'.'+method).toString();
+            //后端分页
+
+            //参数判断
+            Map<String,Object> sqlParameters = new LinkedHashMap<>();
+            for(Map.Entry<String,String> entry : Parameters.entrySet()){
+                if(!entry.getKey().equals("format") || entry.getKey().equals("pageNum") || entry.getKey().equals("pageSize")){
+                    sqlParameters.put(entry.getKey(),entry.getValue());
+                }
+            }
+            SqlSession sqlSession = null;
+            List<Map> list;
+            PageModel<Map> pageList;
+            try {
+                List<String> mappers = new ArrayList<>();
+                mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
+                DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(3));
+                SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
+                sqlSession = sqlSessionFactory.openSession();
+                this.offsetPage(0,10);
+                list = sqlSession.selectList(apiMethod,sqlParameters);
+                pageList = this.resultPage(list);
+            }finally {
+                sqlSession.close();
+            }
+            return pageList;
         }
-        return list;
+        return null;
     }
 
     private Map<String,String> jsonMapResolver(String params){
