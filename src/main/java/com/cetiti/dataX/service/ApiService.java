@@ -1,13 +1,14 @@
 package com.cetiti.dataX.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.cetiti.core.controller.BaseController;
 import com.cetiti.core.dataSource.DataCenterBuilder;
-import com.cetiti.core.support.BaseSupport;
 import com.cetiti.core.support.PageModel;
+import com.cetiti.dataX.dao.ApiInfoDao;
 import com.cetiti.dataX.dao.DataPropertiesDao;
+import com.cetiti.dataX.dao.ServiceResourceDao;
+import com.cetiti.dataX.entity.ApiInfo;
 import com.cetiti.dataX.entity.DataProperties;
+import com.cetiti.dataX.entity.ServiceResource;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -15,75 +16,108 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 
 /**
  * 描述：API接口访问service
- *
+ * @author zhouliyu
+ * @version dataX v1.0.0
  * */
 @Service
 public class ApiService extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
+    private static final int MAX_PAGE_SIZE = 200;
 
     DataCenterBuilder dataCenterBuilder = new DataCenterBuilder();
     @Autowired
     private DataPropertiesDao DataPropertiesDao;
+    @Autowired
+    private ApiInfoDao apiInfoDao;
+    @Autowired
+    private ServiceResourceDao serviceResourceDao;
 
+    private ApiInfo apiInfo;
+    private Map<String,String> sqlParameters = new HashMap<>();
 
 
     /**
-     * rest方式接口访问 http://Endpoint/rest/mapper/method/?Parameters
+     * rest方式接口访问
      * @param mapper 接口名
      * @param method 方法名
-     * @param Parameters 传参
+     * @param parameters 传参
      * @return 数据集
      * */
-    public PageModel<Map> RestApiService(String mapper, String method, Map<String,String> Parameters){
+    public PageModel<Map> RestApiService(String mapper, String method, Map<String,String> parameters){
         if(!isNull(mapper) && !isNull(method)){
             String apiMethod = new StringBuffer(mapper+'.'+method).toString();
-            //后端分页
-
-            //参数判断
-            Map<String,Object> sqlParameters = new LinkedHashMap<>();
-            for(Map.Entry<String,String> entry : Parameters.entrySet()){
-                if(!entry.getKey().equals("format") || entry.getKey().equals("pageNum") || entry.getKey().equals("pageSize")){
-                    sqlParameters.put(entry.getKey(),entry.getValue());
+            if(this.exitApiMethod(apiMethod,parameters)) {
+                SqlSession sqlSession = null;
+                List<Map> list;
+                PageModel<Map> pageList;
+                if (!isNull(this.apiInfo.getCategoryId())) {
+                    try {
+                        List<String> mappers = new ArrayList<>();
+                        ServiceResource serviceResource = serviceResourceDao.getServiceResource(this.apiInfo.getCategoryId());
+                        mappers.add(serviceResource.getResourceUrl());
+                        DataProperties properties = DataPropertiesDao.getDataProperties(serviceResource.getDataId());
+                        SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties, mappers);
+                        sqlSession = sqlSessionFactory.openSession();
+                        this.pageLimit(parameters); //后端分页
+                        list = sqlSession.selectList(apiMethod, this.sqlParameters);
+                        pageList = this.resultPage(list);
+                    } finally {
+                        sqlSession.close();
+                        if (!isNull(this.sqlParameters)){
+                            this.sqlParameters.clear();
+                        }
+                    }
+                    return pageList;
                 }
             }
-            SqlSession sqlSession = null;
-            List<Map> list;
-            PageModel<Map> pageList;
-            try {
-                List<String> mappers = new ArrayList<>();
-                mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
-                DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(3));
-                SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
-                sqlSession = sqlSessionFactory.openSession();
-                this.offsetPage(0,10);
-                list = sqlSession.selectList(apiMethod,sqlParameters);
-                pageList = this.resultPage(list);
-            }finally {
-                sqlSession.close();
-            }
-            return pageList;
         }
         return null;
     }
 
-    private Map<String,String> jsonMapResolver(String params){
-        Map map = new HashMap();
-        if(params != null){
-            try {
-                map = (Map) JSON.parse(params);
-            }catch (JSONException e){
-                LOGGER.error("JSON转换错误",e.toString());
-            }
-
+    /**
+     * 最大返回200条数据
+     * @param Parameters
+     *
+     * */
+    private void pageLimit(Map<String,String> Parameters){
+        int pageNum = Integer.parseInt(Parameters.get("pageNum"));
+        int pageSize = Integer.parseInt(Parameters.get("pageSize"));
+        if(pageSize <= MAX_PAGE_SIZE){
+            this.offsetPage(pageNum,pageSize);
+        }else {
+            this.offsetPage(pageNum,MAX_PAGE_SIZE);
         }
-        return map;
+    }
+
+    /**
+     * apiMethod 参数验证
+     * @param apiMethod
+     * @param parameters
+     * @return
+     * */
+    private boolean exitApiMethod(String apiMethod, Map<String,String> parameters) {
+        List<ApiInfo> apiInfos = apiInfoDao.apiInfoList();
+        for (ApiInfo apiInfo:apiInfos){
+            if(apiInfo.getApiName().equals(apiMethod)){
+                this.apiInfo = apiInfo;
+                List<String> list = Arrays.asList(apiInfo.getParameters().split(","));
+                for (int i = 0;i<list.size();i++){
+                    for(Map.Entry<String,String> entry : parameters.entrySet()){
+                            if(entry.getKey().equals(list.get(i))){
+                                this.sqlParameters.put(entry.getKey(),entry.getValue());
+                            }
+                        }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
 }

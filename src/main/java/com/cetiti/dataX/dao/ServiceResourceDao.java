@@ -2,8 +2,6 @@ package com.cetiti.dataX.dao;
 
 
 import com.cetiti.dataX.entity.ServiceResource;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ServiceResourceDao {
@@ -12,7 +10,9 @@ public interface ServiceResourceDao {
 
     int insertServiceResource(ServiceResource serviceResource);
 
-    int updateServiceResource(BigDecimal categoryId);
+    int updateServiceResource(ServiceResource serviceResource);
 
-    int deleteServiceResource(BigDecimal categoryId);
+    int deleteServiceResource(String categoryId);
+
+    ServiceResource getServiceResource(String categoryId);
 }

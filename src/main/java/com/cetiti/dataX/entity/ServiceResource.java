@@ -1,15 +1,14 @@
 package com.cetiti.dataX.entity;
 
-import java.math.BigDecimal;
 
 public class ServiceResource {
-    private BigDecimal categoryId;
+    private String categoryId;
     private String resourceUrl;
     private String nameSpace;
     private String iconName;
-    private BigDecimal dataId;
+    private long dataId;
 
-    public BigDecimal getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
@@ -25,11 +24,11 @@ public class ServiceResource {
         return iconName;
     }
 
-    public BigDecimal getDataId() {
+    public long getDataId() {
         return dataId;
     }
 
-    public void setCategoryId(BigDecimal categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -45,7 +44,7 @@ public class ServiceResource {
         this.iconName = iconName;
     }
 
-    public void setDataId(BigDecimal dataId) {
+    public void setDataId(long dataId) {
         this.dataId = dataId;
     }
 

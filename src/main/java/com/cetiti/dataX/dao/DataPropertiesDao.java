@@ -1,8 +1,6 @@
 package com.cetiti.dataX.dao;
 
 import com.cetiti.dataX.entity.DataProperties;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface DataPropertiesDao {
@@ -13,10 +11,9 @@ public interface DataPropertiesDao {
 
     int updateDataProperties(DataProperties properties);
 
-    int deleteDataProperties(BigDecimal dataId);
+    int deleteDataProperties(long dataId);
 
-    DataProperties getDataProperties(BigDecimal dataId);
-
+    DataProperties getDataProperties(long dataId);
 
 
 }

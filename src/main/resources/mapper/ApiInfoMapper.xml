@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cetiti.dataX.dao.ApiInfoDao">
+    <select id="apiInfoList" resultType="ApiInfo">
+      SELECT api_id, category_id, api_name, select_id, parameters FROM API_INFO
+    </select>
+
+    <insert id="insertApiInfo" parameterType="ApiInfo">
+        INSERT INTO API_INFO (api_id, category_id, api_name, select_id, parameters)
+        VALUES (#{apiId},#{categoryId},#{apiName},#{selectId},#{parameters})
+    </insert>
+
+    <update id="updateApiInfo" parameterType="ApiInfo">
+        UPDATE API_INFO
+        <set>
+            <if test="apiName != null">
+                api_name = #{apiName},
+            </if>
+            <if test="selectId != null">
+                select_id = #{selectId},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="parameters != null">
+                parameters = #{parameters},
+            </if>
+        </set>
+        WHERE api_id = #{apiId}
+    </update>
+
+    <delete id="deleteApiInfo" parameterType="java.lang.String">
+        DELETE FROM API_INFO
+        WHERE api_id = #{apiId}
+    </delete>
+</mapper>

@@ -19,7 +19,7 @@ public class PageModel<T> implements Serializable {
     //总记录数
     private long total;
     //结果集
-    private List<T> rows;
+    private List<T> apiInfo;
     //页码值
     private int pageNum;
     //每页记录数
@@ -28,10 +28,6 @@ public class PageModel<T> implements Serializable {
     private int pages;
     //当前页的数量 <= pageSize, 该属性来自ArrayList的size属性
     private int size;
-    //状态码
-    private Integer code;
-    //状态内容
-    private String msg;
 
 
     public PageModel() {
@@ -49,7 +45,7 @@ public class PageModel<T> implements Serializable {
             for(T t : list){
                 customList.add(t);
             }
-            this.rows = customList;
+            this.apiInfo = customList;
             this.size = page.size();
         }
     }
@@ -58,8 +54,8 @@ public class PageModel<T> implements Serializable {
         return total;
     }
 
-    public List<T> getRows() {
-        return rows;
+    public List<T> getApiInfo() {
+        return apiInfo;
     }
 
     public int getPageNum() {
@@ -82,12 +78,12 @@ public class PageModel<T> implements Serializable {
         this.total = total;
     }
 
-    public void setRows(List<T> rows) {
+    public void setApiInfo(List<T> apiInfo) {
         List<T> list = new ArrayList<>();
-        for(T t : rows){
+        for(T t : apiInfo){
             list.add(t);
         }
-        this.rows = rows;
+        this.apiInfo = apiInfo;
     }
 
     public void setPageNum(int pageNum) {

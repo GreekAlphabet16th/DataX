@@ -1,6 +1,5 @@
 package com.cetiti.dataX.entity;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -10,17 +9,17 @@ import java.util.List;
  */
 public class ApiInfo {
 
-    private BigDecimal apiId;
-    private BigDecimal categoryId;
+    private String apiId;
+    private String categoryId;
     private String apiName;
     private String selectId;
-    private List<String> inputParams;
+    private String parameters;
 
-    public BigDecimal getApiId() {
+    public String getApiId() {
         return apiId;
     }
 
-    public BigDecimal getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
@@ -32,15 +31,14 @@ public class ApiInfo {
         return selectId;
     }
 
-    public List<String> getInputParams() {
-        return inputParams;
+    public String getParameters() {
+        return parameters;
     }
-
-    public void setApiId(BigDecimal apiId) {
+    public void setApiId(String apiId) {
         this.apiId = apiId;
     }
 
-    public void setCategoryId(BigDecimal categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -52,18 +50,18 @@ public class ApiInfo {
         this.selectId = selectId;
     }
 
-    public void setInputParams(List<String> inputParams) {
-        this.inputParams = inputParams;
+    public void setParameters(String parameters) {
+        this.parameters = parameters;
     }
 
     @Override
     public String toString() {
         return "ApiInfo{" +
-                "apiId=" + apiId +
-                ", categoryId=" + categoryId +
+                "apiId='" + apiId + '\'' +
+                ", categoryId='" + categoryId + '\'' +
                 ", apiName='" + apiName + '\'' +
                 ", selectId='" + selectId + '\'' +
-                ", inputParams=" + inputParams +
+                ", parameters=" + parameters +
                 '}';
     }
 }

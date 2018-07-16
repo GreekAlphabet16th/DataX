@@ -20,11 +20,11 @@ public class TestService {
 
     public List<Map> testServiceData(){
         SqlSession sqlSession = null;
-        List<Map> list = new ArrayList<>();
+        List<Map> list;
         try {
             List<String> mappers = new ArrayList<>();
             mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
-            DataProperties properties = DataPropertiesDao.getDataProperties(new BigDecimal(3));
+            DataProperties properties = DataPropertiesDao.getDataProperties(3);
             SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties,mappers);
             sqlSession = sqlSessionFactory.openSession();
             Map<String, Object> params= new HashMap<>();

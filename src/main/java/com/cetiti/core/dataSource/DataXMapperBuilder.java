@@ -59,7 +59,8 @@ public class DataXMapperBuilder extends BaseBuilder {
     }
 
     /**
-     * 创建apiInfo对象
+     * 创建apiInfo对象 ---> 待完善
+     *
      * */
     private void getApiInfo(XNode context){
         Map<String,String> apiInfo = new HashMap<>();

@@ -11,8 +11,8 @@
     </select>
 
     <insert id="insertDataProperties" parameterType="DataProperties">
-        INSERT INTO DATA_PROPERTIES (data_id,sql_type,data_center,driver,url,user_name,pass_word)
-        VALUES (#{dataId},#{sqlType},#{dataCenter},#{driver},#{url},#{userName},#{passWord})
+        INSERT INTO DATA_PROPERTIES (sql_type,data_center,driver,url,user_name,pass_word)
+        VALUES (#{sqlType},#{dataCenter},#{driver},#{url},#{userName},#{passWord})
     </insert>
 
     <update id="updateDataProperties" parameterType="DataProperties">
@@ -31,16 +31,16 @@
                 url = #{url},
             </if>
             <if test="userName != null">
-                userName = #{userName},
+                user_name = #{userName},
             </if>
             <if test="passWord != null">
-                passWord = #{passWord},
+                pass_word = #{passWord},
             </if>
         </set>
         WHERE data_id = #{dataId}
     </update>
 
-    <delete id="deleteDataProperties" parameterType="java.lang.Integer">
+    <delete id="deleteDataProperties" parameterType="java.lang.Long">
         DELETE FROM DATA_PROPERTIES
         WHERE data_id = #{dataId}
     </delete>
