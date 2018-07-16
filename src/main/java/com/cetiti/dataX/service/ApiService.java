@@ -82,7 +82,7 @@ public class ApiService extends BaseController {
 
     /**
      * 最大返回200条数据
-     * @param Parameters
+     * @param Parameters Url传入参数
      *
      * */
     private void pageLimit(Map<String,String> Parameters){
@@ -97,8 +97,8 @@ public class ApiService extends BaseController {
 
     /**
      * apiMethod 参数验证
-     * @param apiMethod
-     * @param parameters
+     * @param apiMethod  方法名
+     * @param parameters Url传入参数
      * @return
      * */
     private boolean exitApiMethod(String apiMethod, Map<String,String> parameters) {
