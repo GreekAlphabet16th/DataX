@@ -11,9 +11,9 @@ public interface DataPropertiesDao {
 
     int updateDataProperties(DataProperties properties);
 
-    int deleteDataProperties(long dataId);
+    int deleteDataProperties(String dataId);
 
-    DataProperties getDataProperties(long dataId);
+    DataProperties getDataProperties(String dataId);
 
 
 }

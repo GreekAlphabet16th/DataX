@@ -1,6 +1,7 @@
+
 import com.cetiti.core.support.UUIDGenerator;
-import com.cetiti.dataX.dao.ApiInfoDao;
-import com.cetiti.dataX.entity.ApiInfo;
+import com.cetiti.dataX.entity.DataProperties;
+import com.cetiti.dataX.service.impl.ApiService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,18 +10,19 @@ import java.util.List;
 
 public class ApiInfoTest extends BaseTest {
     @Autowired
-    private ApiInfoDao apiInfoDao;
+    private ApiService apiServiceImpl;
     @Test
     public void testInsertApiInfo(){
-        ApiInfo apiInfo = new ApiInfo();
-        List<String> parameters = new ArrayList<>();
-        parameters.add("name");
-        parameters.add("districtCode");
-        apiInfo.setApiId(UUIDGenerator.generate());
-        apiInfo.setApiName("com.cetiti.dataX.dao.UserDao.selectUserList");
-        apiInfo.setSelectId("企业信息");
-        apiInfo.setCategoryId(UUIDGenerator.generate());
-        apiInfo.setParameters(String.join(",",parameters));
-        apiInfoDao.insertApiInfo(apiInfo);
+        DataProperties dataProperties = new DataProperties();
+        dataProperties.setDataId(UUIDGenerator.generate());
+        dataProperties.setDataCenter("pdDsdb");
+        dataProperties.setSqlType("mysql");
+        dataProperties.setDriver("com.mysql.jdbc.Driver");
+        dataProperties.setUrl("jdbc:mysql://10.0.30.207:3306/pd_dsdb?useUnicode=true&characterEncoding=utf8&useSSL=false");
+        dataProperties.setUserName("pd");
+        dataProperties.setPassWord("123456");
+        List<String> mappers = new ArrayList<>();
+        mappers.add("file:///D:/zly7056/Desktop/CompanyMapper.xml");
+        apiServiceImpl.insertApiService(dataProperties,mappers);
     }
 }

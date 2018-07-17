@@ -13,13 +13,15 @@ public class DataPropertiesTest extends BaseTest {
     @Test
     public void testInsertDataProperties(){
         DataProperties dataProperties = new DataProperties();
+        dataProperties.setDataId(UUIDGenerator.generate());
         dataProperties.setDataCenter("pdDsdb");
         dataProperties.setSqlType("mysql");
         dataProperties.setDriver("com.mysql.jdbc.Driver");
         dataProperties.setUrl("jdbc:mysql://10.0.30.207:3306/pd_dsdb?useUnicode=true&characterEncoding=utf8&useSSL=false");
         dataProperties.setUserName("pd");
         dataProperties.setPassWord("123456");
-        dataPropertiesDao.insertDataProperties(dataProperties);
+        int i =dataPropertiesDao.insertDataProperties(dataProperties);
+        System.out.println(i);
     }
 /*    @Test
     public void testUpdateDataProperties(){

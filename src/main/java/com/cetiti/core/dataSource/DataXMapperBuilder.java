@@ -43,7 +43,6 @@ public class DataXMapperBuilder extends BaseBuilder {
     public void parse() {
         if (!this.configuration.isResourceLoaded(this.resource)) {
             this.configurationElement(this.parser.evalNode("/mapper"));
-            this.getApiInfo(this.parser.evalNode("/mapper"));
             this.configuration.addLoadedResource(this.resource);
             this.bindMapperForNamespace();
         }
@@ -56,34 +55,6 @@ public class DataXMapperBuilder extends BaseBuilder {
 
     public XNode getSqlFragment(String refid) {
         return (XNode)this.sqlFragments.get(refid);
-    }
-
-    /**
-     * 创建apiInfo对象 ---> 待完善
-     *
-     * */
-    private void getApiInfo(XNode context){
-        Map<String,String> apiInfo = new HashMap<>();
-        String namespace = context.getStringAttribute("namespace");
-        if(namespace != null && !namespace.equals("")){
-            String ns = context.getStringAttribute("ns");
-            if (ns != null && !ns.equals("")){
-                apiInfo.put("ns",ns);
-            }
-            String icon = context.getStringAttribute("icon");
-            if (ns != null && !ns.equals("")){
-                apiInfo.put("icon",icon);
-            }
-            List<XNode> list = context.evalNodes("select");
-            Iterator i$ = list.iterator();
-            while (i$.hasNext()){
-                XNode node = (XNode) i$.next();
-                String selectId = node.getStringAttribute("selectId");
-                apiInfo.put(namespace+"."+node.getStringAttribute("id"),selectId);
-            }
-            System.out.println(apiInfo.toString());
-        }
-
     }
 
     private void configurationElement(XNode context) {

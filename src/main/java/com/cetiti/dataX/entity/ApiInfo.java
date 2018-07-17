@@ -1,6 +1,5 @@
 package com.cetiti.dataX.entity;
 
-import java.util.List;
 
 /**
  *描述：API接口信息

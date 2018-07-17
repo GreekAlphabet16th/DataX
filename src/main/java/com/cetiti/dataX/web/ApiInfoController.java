@@ -1,8 +1,9 @@
 package com.cetiti.dataX.web;
 
 import com.cetiti.core.controller.BaseController;
+import com.cetiti.core.support.OpenApiResult;
 import com.cetiti.core.support.PageModel;
-import com.cetiti.dataX.service.ApiService;
+import com.cetiti.dataX.service.impl.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ApiInfoController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiInfoController.class);
 
     @Autowired
-    private ApiService apiService;
+    private ApiService apiServiceImpl;
 
     /**
      * rest方式接口访问 http://Endpoint/api/?format=rest&pageNum&pageSize&parameters
@@ -26,16 +27,28 @@ public class ApiInfoController extends BaseController {
      * */
     @RequestMapping(value = "/{mapper}/{method}/", method = RequestMethod.POST)
     @ResponseBody
-    public PageModel<Map> apiMethodResult(@PathVariable("mapper") String mapper,
-                                          @PathVariable("method")String method,
-                                          @RequestParam Map<String,String> parameters){
+    public Map<String, Object> apiMethodResult(@PathVariable("mapper") String mapper,
+                                         @PathVariable("method")String method,
+                                         @RequestParam Map<String,String> parameters){
         String format = parameters.get("format");
-        if(format.equals("rest")){
-            PageModel resultList = apiService.RestApiService(mapper,method,parameters);
-            return resultList;
-        }else {
-            return null;
+        OpenApiResult result = OpenApiResult.getDefaultOpenResult();
+        try {
+            if(format.equals("rest")){
+                PageModel<Map> resultList = apiServiceImpl.RestApiService(mapper,method,parameters);
+                result.setPageInfo(resultList);
+                result.setMsg("success");
+                return result.getResultMap();
+            }else {
+                result.setMsg("URL请求格式错误");
+                return result.getResultMap();
+            }
+        } catch (Exception e){
+            LOGGER.error(e.getMessage());
+            result.setMsg("接口数据返回失败");
+            result.setReslutCode(OpenApiResult.CODE.RET_EXCEPTION);
+            return result.getResultMap();
         }
+
 
     }
 }

@@ -6,7 +6,7 @@ public class ServiceResource {
     private String resourceUrl;
     private String nameSpace;
     private String iconName;
-    private long dataId;
+    private String dataId;
 
     public String getCategoryId() {
         return categoryId;
@@ -24,7 +24,7 @@ public class ServiceResource {
         return iconName;
     }
 
-    public long getDataId() {
+    public String getDataId() {
         return dataId;
     }
 
@@ -44,7 +44,7 @@ public class ServiceResource {
         this.iconName = iconName;
     }
 
-    public void setDataId(long dataId) {
+    public void setDataId(String dataId) {
         this.dataId = dataId;
     }
 

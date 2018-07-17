@@ -8,7 +8,7 @@ package com.cetiti.dataX.entity;
  * */
 public class DataProperties {
 
-    private long dataId;
+    private String dataId;
     private String sqlType;
     private String dataCenter;
     private String driver;
@@ -16,7 +16,7 @@ public class DataProperties {
     private String userName;
     private String passWord;
 
-    public long getDataId() {
+    public String getDataId() {
         return dataId;
     }
 
@@ -44,7 +44,7 @@ public class DataProperties {
         return passWord;
     }
 
-    public void setDataId(long dataId) {
+    public void setDataId(String dataId) {
         this.dataId = dataId;
     }
 

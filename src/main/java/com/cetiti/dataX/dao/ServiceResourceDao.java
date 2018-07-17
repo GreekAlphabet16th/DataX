@@ -2,6 +2,8 @@ package com.cetiti.dataX.dao;
 
 
 import com.cetiti.dataX.entity.ServiceResource;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface ServiceResourceDao {
@@ -14,5 +16,5 @@ public interface ServiceResourceDao {
 
     int deleteServiceResource(String categoryId);
 
-    ServiceResource getServiceResource(String categoryId);
+    ServiceResource getServiceResource(@Param("apiName") String apiName);
 }
