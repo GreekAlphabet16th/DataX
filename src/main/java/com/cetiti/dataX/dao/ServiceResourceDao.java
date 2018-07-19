@@ -16,5 +16,5 @@ public interface ServiceResourceDao {
 
     int deleteServiceResource(String categoryId);
 
-    ServiceResource getServiceResource(@Param("apiName") String apiName);
+    ServiceResource getServiceResource(String categoryId);
 }

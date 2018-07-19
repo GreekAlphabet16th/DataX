@@ -11,6 +11,7 @@ import com.cetiti.dataX.dao.ServiceResourceDao;
 import com.cetiti.dataX.entity.ApiInfo;
 import com.cetiti.dataX.entity.DataProperties;
 import com.cetiti.dataX.entity.ServiceResource;
+import com.cetiti.dataX.enums.SqlType;
 import com.cetiti.dataX.service.impl.ApiService;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -18,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -62,7 +66,7 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
                 if (!isNull(this.apiInfo.getCategoryId())) {
                     try {
                         List<String> mappers = new ArrayList<>();
-                        ServiceResource serviceResource = serviceResourceDao.getServiceResource(this.apiInfo.getApiName());
+                        ServiceResource serviceResource = serviceResourceDao.getServiceResource(this.apiInfo.getCategoryId());
                         mappers.add(serviceResource.getResourceUrl());
                         DataProperties properties = DataPropertiesDao.getDataProperties(serviceResource.getDataId());
                         SqlSessionFactory sqlSessionFactory = dataCenterBuilder.sqlSessionFactoryBuild(properties, mappers);
@@ -86,10 +90,11 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
     /**
      * 发布接口
      * */
+    @Transactional(isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED)
     public int insertApiService(DataProperties dataProperties, List<String> mappers) {
-        //数据唯一性验证
+        int result = 1;
+        //事务管理
         if(!isNull(dataProperties) && mappers.size()!=0){
-            try {
                 dataProperties.setDataId(UUIDGenerator.generate());
                 DataPropertiesDao.insertDataProperties(dataProperties); //添加数据库配置
                 Map<String,Object> map = dataCenterBuilder.xmlServiceBulid(mappers,dataProperties.getDataId());
@@ -103,13 +108,17 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
                         apiInfoDao.insertApiInfo(apiInfo); //添加接口信息
                     }
                 }
-            }catch (Exception e){
-                LOGGER.error(e.getMessage());
-            }
             return 0;
         }
-        return 1;
+        return result;
     }
+
+
+    /**
+     * 前端验证
+     * 数据唯一性验证-->数据库是否存在-->mapper是否存在
+     *
+     * */
 
 
     /**
@@ -162,5 +171,6 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
         }
         return false;
     }
+
 
 }

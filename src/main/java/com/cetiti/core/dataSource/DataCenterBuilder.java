@@ -108,8 +108,6 @@ public class DataCenterBuilder {
                 String selectId = node.getStringAttribute("selectId");
                 String apiName = new StringBuffer(namespace+"."+node.getStringAttribute("id")).toString();
                 apiInfo.setParameters(this.parseDynamicTags(node));
-                String sql = node.getStringBody().trim();
-                System.out.println(sql);
                 apiInfo.setApiId(UUIDGenerator.generate());
                 apiInfo.setSelectId(selectId);
                 apiInfo.setApiName(apiName);

@@ -3,8 +3,8 @@
 
 <mapper namespace="com.cetiti.dataX.dao.ServiceResourceDao">
     <select id="getServiceResource" resultType="ServiceResource">
-      SELECT resource_url, data_id FROM SERVICE_RESOURCE  LEFT JOIN API_INFO ON SERVICE_RESOURCE.category_id = API_INFO.category_id
-      WHERE API_INFO.api_name = #{apiName}
+      SELECT resource_url, data_id FROM SERVICE_RESOURCE
+      WHERE category_id = #{categoryId}
     </select>
 
     <insert id="insertServiceResource" parameterType="ServiceResource">
