@@ -1,9 +1,9 @@
 package com.cetiti.dataX.web;
 
 import com.cetiti.core.controller.BaseController;
-import com.cetiti.core.support.OpenApiResult;
+import com.cetiti.core.support.ApiResult;
 import com.cetiti.core.support.PageModel;
-import com.cetiti.dataX.service.impl.ApiService;
+import com.cetiti.dataX.service.ApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ApiInfoController extends BaseController {
                                          @PathVariable("method")String method,
                                          @RequestParam Map<String,String> parameters){
         String format = parameters.get("format");
-        OpenApiResult result = OpenApiResult.getDefaultOpenResult();
+        ApiResult result = ApiResult.getDefaultApiResult();
         try {
             if(format.equals("rest")){
                 PageModel<Map> resultList = apiServiceImpl.RestApiService(mapper,method,parameters);
@@ -45,7 +45,7 @@ public class ApiInfoController extends BaseController {
         } catch (Exception e){
             LOGGER.error(e.getMessage());
             result.setMsg("接口数据返回失败");
-            result.setReslutCode(OpenApiResult.CODE.RET_EXCEPTION);
+            result.setReslutCode(ApiResult.CODE.RET_EXCEPTION);
             return result.getResultMap();
         }
 

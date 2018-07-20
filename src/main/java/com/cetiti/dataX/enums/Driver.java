@@ -1,8 +1,8 @@
 package com.cetiti.dataX.enums;
 
 public enum Driver {
-    MYSQL("com.mysql.jdbc.Driver",0),
-    ORACLE("oracle.jdbc.driver.OracleDriver",1);
+    MYSQL("com.mysql.jdbc.Driver",1),
+    ORACLE("oracle.jdbc.driver.OracleDriver",2);
 
     private int num;
     private String value;
@@ -15,10 +15,10 @@ public enum Driver {
         return num;
     }
 
-    public String getValue(int num) {
+    public static String getValue(int num) {
         for(Driver driver : Driver.values()){
             if(driver.getNum() == num){
-                return value;
+                return driver.value;
             }
         }
         return null;

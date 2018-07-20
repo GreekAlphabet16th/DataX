@@ -1,7 +1,7 @@
 
 import com.cetiti.core.support.UUIDGenerator;
 import com.cetiti.dataX.entity.DataProperties;
-import com.cetiti.dataX.service.impl.ApiService;
+import com.cetiti.dataX.service.ApiService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

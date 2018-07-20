@@ -9,7 +9,7 @@ import java.util.Map;
  * 描述：封装openApi返回结果
  *
  * */
-public class OpenApiResult {
+public class ApiResult {
 
     public enum CODE{
         RET_OK("0"),
@@ -38,21 +38,21 @@ public class OpenApiResult {
     /**
      * 默认错误返回
      * */
-    public static OpenApiResult getDefaultFailResult(){
-        OpenApiResult openApiResult = new OpenApiResult();
-        openApiResult.setReslutCode(CODE.RET_NO);
-        openApiResult.setMsg("");
-        return openApiResult;
+    public static ApiResult getDefaultFailResult(){
+        ApiResult apiResult = new ApiResult();
+        apiResult.setReslutCode(CODE.RET_NO);
+        apiResult.setMsg("");
+        return apiResult;
     }
 
     /**
      * 默认返回
      * */
-    public static OpenApiResult getDefaultOpenResult(){
-        OpenApiResult openApiResult = new OpenApiResult();
-        openApiResult.setReslutCode(CODE.RET_OK);
-        openApiResult.setMsg("");
-        return openApiResult;
+    public static ApiResult getDefaultApiResult(){
+        ApiResult apiResult = new ApiResult();
+        apiResult.setReslutCode(CODE.RET_OK);
+        apiResult.setMsg("");
+        return apiResult;
     }
 
     /**

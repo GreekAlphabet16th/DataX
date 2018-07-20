@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cetiti.dataX.dao.XmlResourceDao">
+    <insert id="insertXmlResource" parameterType="XmlResource">
+        INSERT INTO xml_resource (category_id,mapper_url,name_space,icon_name,sql_id,,description)
+        VALUES (#{categoryId},#{mapperUrl},#{nameSpace},#{iconName},#{sqlId},#{provider},#{description})
+    </insert>
+
+    <update id="updateXmlResource" parameterType="XmlResource">
+        UPDATE xml_resource
+        <set>
+            <if test="mapper_url != null">
+                mapper_url = #{mapperUrl},
+            </if>
+            <if test="name_space != null">
+                name_space = #{nameSpace},
+            </if>
+            <if test="icon_name != null">
+                icon_name = #{iconName},
+            </if>
+            <if test="sql_id != null">
+                sql_id = #{sqlId},
+            </if>
+            <if test="provider != null">
+                provider = #{provider},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+        </set>
+        WHERE category_id = #{categoryId}
+    </update>
+
+    <delete id="deleteXmlResource" parameterType="java.lang.String">
+        DELETE xml_resource,api_method_info FROM xml_resource LEFT JOIN api_method_info
+        ON xml_resource.category_id = api_method_info.category_id
+        WHERE xml_resource.category_id = #{categoryId}
+    </delete>
+</mapper>

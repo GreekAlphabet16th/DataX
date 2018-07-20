@@ -1,4 +1,4 @@
-package com.cetiti.dataX.service.impl;
+package com.cetiti.dataX.service;
 
 import com.cetiti.core.support.PageModel;
 import com.cetiti.dataX.entity.DataProperties;

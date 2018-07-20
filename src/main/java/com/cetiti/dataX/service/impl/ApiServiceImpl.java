@@ -1,8 +1,8 @@
-package com.cetiti.dataX.service;
+package com.cetiti.dataX.service.impl;
 
 import com.cetiti.core.dataSource.DataCenterBuilder;
 import com.cetiti.core.support.BaseSupport;
-import com.cetiti.core.support.OpenApiResult;
+import com.cetiti.core.support.ApiResult;
 import com.cetiti.core.support.PageModel;
 import com.cetiti.core.support.UUIDGenerator;
 import com.cetiti.dataX.dao.ApiInfoDao;
@@ -11,8 +11,7 @@ import com.cetiti.dataX.dao.ServiceResourceDao;
 import com.cetiti.dataX.entity.ApiInfo;
 import com.cetiti.dataX.entity.DataProperties;
 import com.cetiti.dataX.entity.ServiceResource;
-import com.cetiti.dataX.enums.SqlType;
-import com.cetiti.dataX.service.impl.ApiService;
+import com.cetiti.dataX.service.ApiService;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -73,7 +72,7 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
                         sqlSession = sqlSessionFactory.openSession();
                         this.pageLimit(parameters); //后端分页
                         list = sqlSession.selectList(apiMethod, this.sqlParameters);
-                        pageModel = OpenApiResult.resultPage(list);
+                        pageModel = ApiResult.resultPage(list);
                     } finally {
                         sqlSession.close();
                         if (!isNull(this.sqlParameters)){
@@ -130,9 +129,9 @@ public class ApiServiceImpl extends BaseSupport implements ApiService {
         int pageNum = Integer.parseInt(Parameters.get("pageNum"));
         int pageSize = Integer.parseInt(Parameters.get("pageSize"));
         if(pageSize <= MAX_PAGE_SIZE){
-            OpenApiResult.offsetPage(pageNum,pageSize);
+            ApiResult.offsetPage(pageNum,pageSize);
         }else {
-            OpenApiResult.offsetPage(pageNum,MAX_PAGE_SIZE);
+            ApiResult.offsetPage(pageNum,MAX_PAGE_SIZE);
         }
     }
 
