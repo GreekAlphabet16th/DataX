@@ -2,10 +2,12 @@ package com.cetiti.dataX.entity;
 
 public class ApiMethodInfo {
     private String apiId;
-    private String categoryId;
     private String apiName;
     private String selectId;
     private String apiParameters;
+    private String categoryId;
+    //父级：资源目录
+    private XmlResource xmlResource;
 
     public String getApiId() {
         return apiId;
@@ -13,14 +15,6 @@ public class ApiMethodInfo {
 
     public void setApiId(String apiId) {
         this.apiId = apiId;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getApiName() {
@@ -47,14 +41,31 @@ public class ApiMethodInfo {
         this.apiParameters = apiParameters;
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public XmlResource getXmlResource() {
+        return xmlResource;
+    }
+
+    public void setXmlResource(XmlResource xmlResource) {
+        this.xmlResource = xmlResource;
+    }
+
     @Override
     public String toString() {
         return "ApiMethodInfo{" +
                 "apiId='" + apiId + '\'' +
-                ", categoryId='" + categoryId + '\'' +
                 ", apiName='" + apiName + '\'' +
                 ", selectId='" + selectId + '\'' +
                 ", apiParameters='" + apiParameters + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", xmlResource=" + xmlResource +
                 '}';
     }
 }

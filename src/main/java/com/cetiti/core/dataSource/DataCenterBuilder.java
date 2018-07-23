@@ -1,9 +1,9 @@
 package com.cetiti.core.dataSource;
 
 import com.cetiti.core.support.UUIDGenerator;
-import com.cetiti.dataX.entity.ApiInfo;
-import com.cetiti.dataX.entity.DataProperties;
-import com.cetiti.dataX.entity.ServiceResource;
+import com.cetiti.dataX.entity.*;
+import com.cetiti.dataX.enums.Driver;
+import com.cetiti.dataX.enums.SqlType;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.*;
 
 
@@ -28,8 +29,8 @@ public class DataCenterBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataCenterBuilder.class);
     private static final String DEFAULT_MYBATIS_CONFIG = "spring/dataCenter.xml";
 
-    public SqlSessionFactory sqlSessionFactoryBuild(DataProperties DataProperties,List<String> mappers){
-        Properties properties = this.propertiesLoad(DataProperties);
+    public SqlSessionFactory sqlSessionFactoryBuild(DataCenter dataCenter,List<String> mappers){
+        Properties properties = this.dataCenterLoad(dataCenter);
         InputStream inputStream = null;
         try {
             inputStream = Resources.getResourceAsStream(DEFAULT_MYBATIS_CONFIG);
@@ -41,9 +42,9 @@ public class DataCenterBuilder {
         return sqlSessionFactory;
     }
 
-    public Map<String,Object> xmlServiceBulid(List<String> parent,String dataId){
+    public XmlResource xmlResourceBuild(XmlResource xmlResource, List<String> parent){
         try {
-            Map<String, Object> map = new HashMap<>();
+            XmlResource var = new XmlResource();
             if (!parent.isEmpty()) {
                 Iterator i$ = parent.iterator();
                 while(true) {
@@ -55,11 +56,11 @@ public class DataCenterBuilder {
                             ErrorContext.instance().resource(url);
                             inputStream = Resources.getUrlAsStream(url);
                             parser = new XPathParser(inputStream, true, null, new XMLMapperEntityResolver());
-                            map = this.getApiInfo(parser.evalNode("/mapper"), url, dataId);
+                            var = this.parseXmlResource(xmlResource, parser.evalNode("/mapper"), url);
                         }
                     }
 
-                    return map;
+                    return var;
                 }
             }
         } catch (Exception var3) {
@@ -69,55 +70,52 @@ public class DataCenterBuilder {
     }
 
 
-    private Properties propertiesLoad(DataProperties DataProperties){
+    private Properties dataCenterLoad(DataCenter dataCenter){
         Properties properties = new Properties();
-        properties.setProperty("sqlType", DataProperties.getSqlType());
-        properties.setProperty("driver", DataProperties.getDriver());
-        properties.setProperty("url", DataProperties.getUrl());
-        properties.setProperty("userName", DataProperties.getUserName());
-        properties.setProperty("passWord", DataProperties.getPassWord());
+        properties.setProperty("sqlType", SqlType.getValue(dataCenter.getSqlType()));
+        properties.setProperty("driver", Driver.getValue(dataCenter.getSqlType()));
+        properties.setProperty("url", this.sqlUrl(dataCenter));
+        properties.setProperty("userName", dataCenter.getUserName());
+        properties.setProperty("passWord", dataCenter.getPassWord());
         return properties;
     }
 
+
     /**
-     * XML文件解析
-     *
+     *xml 文件解析
      * */
-    private Map<String,Object> getApiInfo(XNode context,String url, String dataId){
+    private XmlResource parseXmlResource(XmlResource xmlResource, XNode context, String url){
         Map<String,Object> map = new HashMap<>();
-        List<ApiInfo> apiInfos = new ArrayList<>();
-        ServiceResource serviceResource = new ServiceResource();
+        List<ApiMethodInfo> apiMethodInfos = new ArrayList<>();
         String namespace = context.getStringAttribute("namespace");
         if(namespace != null && !namespace.equals("")){
-            serviceResource.setCategoryId(UUIDGenerator.generate());
-            serviceResource.setResourceUrl(url);
-            serviceResource.setDataId(dataId);
+            xmlResource.setCategoryId(UUIDGenerator.generate());
+            xmlResource.setMapperUrl(url);
             String ns = context.getStringAttribute("ns");
             if (ns != null && !ns.equals("")){
-                serviceResource.setNameSpace(ns);
+                xmlResource.setNameSpace(ns);
             }
             String icon = context.getStringAttribute("icon");
             if (ns != null && !ns.equals("")){
-                serviceResource.setIconName(icon);
+                xmlResource.setIconName(icon);
             }
             List<XNode> list = context.evalNodes("select");
             Iterator i$ = list.iterator();
             while (i$.hasNext()){
                 XNode node = (XNode) i$.next();
-                ApiInfo apiInfo = new ApiInfo();
+                ApiMethodInfo apiMethodInfo = new ApiMethodInfo();
                 String selectId = node.getStringAttribute("selectId");
                 String apiName = new StringBuffer(namespace+"."+node.getStringAttribute("id")).toString();
-                apiInfo.setParameters(this.parseDynamicTags(node));
-                apiInfo.setApiId(UUIDGenerator.generate());
-                apiInfo.setSelectId(selectId);
-                apiInfo.setApiName(apiName);
-                apiInfo.setCategoryId(serviceResource.getCategoryId());
-                apiInfos.add(apiInfo);
+                apiMethodInfo.setApiParameters(this.parseDynamicTags(node));
+                apiMethodInfo.setCategoryId(xmlResource.getCategoryId());
+                apiMethodInfo.setApiId(UUIDGenerator.generate());
+                apiMethodInfo.setSelectId(selectId);
+                apiMethodInfo.setApiName(apiName);
+                apiMethodInfos.add(apiMethodInfo);
             }
-            map.put("serviceResource",serviceResource);
-            map.put("apiInfos",apiInfos);
+            xmlResource.setApiMethodInfos(apiMethodInfos);
         }
-        return map;
+        return xmlResource;
     }
 
     private String parseDynamicTags(XNode node){
@@ -138,6 +136,16 @@ public class DataCenterBuilder {
             return parameters.toString();
         }
         return null;
+    }
+
+    private String sqlUrl(DataCenter dataCenter){
+        StringBuilder sqlUrl = new StringBuilder("jdbc:");
+        if(dataCenter.getSqlType() == 1){
+            sqlUrl.append("mysql://" + dataCenter.getUrl() + "?useUnicode=true&amp;characterEncoding=UTF-8");
+        }else {
+            sqlUrl.append("oracle:thin:@" + dataCenter.getUrl());
+        }
+        return sqlUrl.toString();
     }
 
 

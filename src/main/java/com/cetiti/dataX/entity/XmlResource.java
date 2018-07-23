@@ -1,13 +1,16 @@
 package com.cetiti.dataX.entity;
 
+import java.util.List;
+
 public class XmlResource {
     private String categoryId;
     private String mapperUrl;
     private String nameSpace;
     private String iconName;
-    private String sqlId;
+    private long sqlId;
     private String provider;
     private String description;
+    private List<ApiMethodInfo> apiMethodInfos;
 
     public String getCategoryId() {
         return categoryId;
@@ -41,11 +44,11 @@ public class XmlResource {
         this.iconName = iconName;
     }
 
-    public String getSqlId() {
+    public long getSqlId() {
         return sqlId;
     }
 
-    public void setSqlId(String sqlId) {
+    public void setSqlId(long sqlId) {
         this.sqlId = sqlId;
     }
 
@@ -65,6 +68,14 @@ public class XmlResource {
         this.description = description;
     }
 
+    public List<ApiMethodInfo> getApiMethodInfos() {
+        return apiMethodInfos;
+    }
+
+    public void setApiMethodInfos(List<ApiMethodInfo> apiMethodInfos) {
+        this.apiMethodInfos = apiMethodInfos;
+    }
+
     @Override
     public String toString() {
         return "XmlResource{" +
@@ -75,6 +86,7 @@ public class XmlResource {
                 ", sqlId='" + sqlId + '\'' +
                 ", provider='" + provider + '\'' +
                 ", description='" + description + '\'' +
+                ", apiMethodInfos=" + apiMethodInfos +
                 '}';
     }
 }

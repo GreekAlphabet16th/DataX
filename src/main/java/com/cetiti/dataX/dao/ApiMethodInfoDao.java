@@ -3,14 +3,13 @@ package com.cetiti.dataX.dao;
 import com.cetiti.dataX.entity.ApiMethodInfo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * 资源目录
+ * 发布接口管理
  * */
 public interface ApiMethodInfoDao {
 
-    List<Map> apiMethodList();
+    List<ApiMethodInfo> apiMethodInfoList(); //一对一展示接口详情
 
     int insertApiMethodInfo(ApiMethodInfo apiMethodInfo);
 

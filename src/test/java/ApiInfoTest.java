@@ -1,28 +1,30 @@
 
-import com.cetiti.core.support.UUIDGenerator;
-import com.cetiti.dataX.entity.DataProperties;
-import com.cetiti.dataX.service.ApiService;
+import com.cetiti.core.support.PageModel;
+import com.cetiti.dataX.entity.ApiMethodInfo;
+import com.cetiti.dataX.entity.XmlResource;
+import com.cetiti.dataX.service.OpenApiService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ApiInfoTest extends BaseTest {
     @Autowired
-    private ApiService apiServiceImpl;
-    @Test
+    private OpenApiService openApiService;
+/*    @Test
     public void testInsertApiInfo(){
-        DataProperties dataProperties = new DataProperties();
-        dataProperties.setDataId(UUIDGenerator.generate());
-        dataProperties.setDataCenter("dataX");
-        dataProperties.setSqlType("mysql");
-        dataProperties.setDriver("com.mysql.jdbc.Driver");
-        dataProperties.setUrl("jdbc:mysql://192.168.138.130:3306/dataX?useUnicode=true&characterEncoding=utf8&useSSL=false");
-        dataProperties.setUserName("root");
-        dataProperties.setPassWord("123456");
+        XmlResource xmlResource = new XmlResource();
+        xmlResource.setSqlId(4);
+        xmlResource.setProvider("cetiti");
+        xmlResource.setDescription("测试xml文件解析");
         List<String> mappers = new ArrayList<>();
-        mappers.add("file:///D:/zly7056/Desktop/UserMapper.xml");
-        apiServiceImpl.insertApiService(dataProperties,mappers);
+        mappers.add("file:///D:/zly7056/Desktop/CompanyMapper.xml");
+        openApiService.insertOpenApiService(xmlResource, mappers);
+    }*/
+
+    @Test
+    public void testQuery(){
+        PageModel<ApiMethodInfo> result = openApiService.ApiMethodInfoList(0,10);
+        System.out.println(result.getApiInfo());
+        PageModel<XmlResource> result1 = openApiService.XmlResourceList(0,10);
+        System.out.println(result1.getApiInfo());
     }
 }

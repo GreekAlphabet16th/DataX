@@ -2,10 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.cetiti.dataX.dao.ApiMethodInfoDao">
-    <select id="apiMethodList" resultType="java.util.Map">
-      SELECT api_id,api_name,xml_resource.category_id,api_parameters,mapper_url,name_space,icon_name,sql_id,provider,description
-      FROM api_method_info LEFT JOIN xml_resource ON api_method_info.category_id = xml_resource.category_id
+
+    <resultMap id="apiAndXmlInfo" type="ApiMethodInfo">
+        <id column="api_id" property="apiId"/>
+        <result column="api_name" property="apiName"/>
+        <result column="api_parameters" property="apiParameters"/>
+        <result column="select_id" property="selectId"/>
+        <result column="api_parameters" property="apiParameters"/>
+        <association property="xmlResource" javaType="XmlResource">
+            <id column="category_id" property="categoryId"/>
+            <result column="sql_id" property="sqlId"/>
+            <result column="mapper_url" property="mapperUrl"/>
+            <result column="name_space" property="nameSpace"/>
+            <result column="provider" property="provider"/>
+            <result column="description" property="description"/>
+        </association>
+    </resultMap>
+
+    <select id="apiMethodInfoList" resultMap="apiAndXmlInfo">
+        SELECT a.api_id,a.api_name,a.select_id,a.api_parameters,x.category_id,x.sql_id,x.mapper_url,x.name_space,x.provider
+        FROM api_method_info a LEFT JOIN xml_resource x ON a.category_id = x.category_id
     </select>
+    
+    <insert id="insertApiMethodInfo" parameterType="ApiMethodInfo">
+        INSERT INTO api_method_info (api_id,api_name,select_id,api_parameters,category_id)
+        VALUES (#{apiId},#{apiName},#{selectId},#{apiParameters},#{categoryId})
+    </insert>
+    
+    <update id="updateApiMethodInfo">
+
+    </update>
+
+    <delete id="deleteApiMethodInfo">
+
+    </delete>
 
 
 </mapper>
