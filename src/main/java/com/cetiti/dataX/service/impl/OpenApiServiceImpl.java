@@ -112,43 +112,7 @@ public class OpenApiServiceImpl extends BaseSupport implements OpenApiService {
             ApiResult.offsetPage(pageNum,MAX_PAGE_SIZE);
         }
     }
-
-/*    *//**
-     * apiMethod 参数验证
-     * @param apiMethod  方法名
-     * @param parameters Url传入参数
-     * @return
-     * *//*
-    private boolean exitApiMethod(String apiMethod, Map<String,String> parameters) {
-        List<ApiMethodInfo> apiMethodInfos = apiMethodInfoDao.apiMethodInfoList();
-        for (ApiMethodInfo apiMethodInfo:apiMethodInfos){
-            if(apiMethodInfo.getApiName().equals(apiMethod)){
-                this.apiMethodInfo = apiMethodInfo;
-                //参数验证
-                if(!isNull(apiMethodInfo.getApiParameters())){
-                    if(apiMethodInfo.getApiParameters().contains(",")){
-                        List<String> list = Arrays.asList(apiMethodInfo.getApiParameters().split(","));
-                        for (int i = 0;i<list.size();i++){
-                            for(Map.Entry<String,String> entry : parameters.entrySet()){
-                                if(entry.getKey().equals(list.get(i))){
-                                    this.sqlParameters.put(entry.getKey(),entry.getValue());
-                                }
-                            }
-                        }
-                    }else {
-                        for(Map.Entry<String,String> entry : parameters.entrySet()){
-                            if(entry.getKey().equals(apiMethodInfo.getApiParameters())){
-                                this.sqlParameters.put(entry.getKey(),entry.getValue());
-                            }
-                        }
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }*/
-
+    
     /**
      * apiMethod 参数验证
      * @param apiMethod  方法名
