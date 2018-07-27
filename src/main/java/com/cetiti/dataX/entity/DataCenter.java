@@ -1,31 +1,35 @@
 package com.cetiti.dataX.entity;
 
+import java.io.Serializable;
+
 /**
  * 数据源javaBean
  * @author zhouliyu
  * @version dataX v1.0.0
  * */
-public class DataCenter {
-    private long sqlId;
-    private int sqlType;
+public class DataCenter implements Serializable {
+
+    private static final long serialVersionUID = -7250299194476904869L;
+    private Long sqlId;
+    private Integer sqlType;
     private String sqlName;
     private String url;
     private String userName;
     private String passWord;
 
-    public long getSqlId() {
+    public Long getSqlId() {
         return sqlId;
     }
 
-    public void setSqlId(long sqlId) {
+    public void setSqlId(Long sqlId) {
         this.sqlId = sqlId;
     }
 
-    public int getSqlType() {
+    public Integer getSqlType() {
         return sqlType;
     }
 
-    public void setSqlType(int sqlType) {
+    public void setSqlType(Integer sqlType) {
         this.sqlType = sqlType;
     }
 

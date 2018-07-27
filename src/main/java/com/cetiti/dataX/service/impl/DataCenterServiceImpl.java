@@ -5,7 +5,7 @@ import com.cetiti.core.support.BaseSupport;
 import com.cetiti.core.support.PageModel;
 import com.cetiti.dataX.dao.DataCenterDao;
 import com.cetiti.dataX.entity.DataCenter;
-import com.cetiti.dataX.enums.Driver;
+import com.cetiti.dataX.enums.DriverEnum;
 import com.cetiti.dataX.service.DataCenterService;
 import com.cetiti.dataX.web.DataCenterController;
 import org.slf4j.Logger;
@@ -75,7 +75,7 @@ public class DataCenterServiceImpl extends BaseSupport implements DataCenterServ
             url.append("oracle:thin:@" + dataCenter.getUrl());
         }
         try {
-            Class.forName(Driver.getValue(dataCenter.getSqlType()));
+            Class.forName(DriverEnum.getValue(dataCenter.getSqlType()));
             connection = DriverManager.getConnection(url.toString(),dataCenter.getUserName(),dataCenter.getPassWord());
             if(!isNull(connection)){
                 return true;

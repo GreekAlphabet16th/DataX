@@ -25,7 +25,8 @@ public class OpenApiServiceImpl extends BaseSupport implements OpenApiService {
     private static final int MAX_PAGE_SIZE = 200;
     private ApiMethodInfo apiMethodInfo;
     private Map<String,String> sqlParameters = new HashMap<>();
-    DataCenterBuilder dataCenterBuilder = new DataCenterBuilder();
+    @Autowired
+    private DataCenterBuilder dataCenterBuilder;
     @Autowired
     private ApiMethodInfoDao apiMethodInfoDao;
     @Autowired
@@ -112,12 +113,12 @@ public class OpenApiServiceImpl extends BaseSupport implements OpenApiService {
         }
     }
 
-    /**
+/*    *//**
      * apiMethod 参数验证
      * @param apiMethod  方法名
      * @param parameters Url传入参数
      * @return
-     * */
+     * *//*
     private boolean exitApiMethod(String apiMethod, Map<String,String> parameters) {
         List<ApiMethodInfo> apiMethodInfos = apiMethodInfoDao.apiMethodInfoList();
         for (ApiMethodInfo apiMethodInfo:apiMethodInfos){
@@ -137,6 +138,34 @@ public class OpenApiServiceImpl extends BaseSupport implements OpenApiService {
                     }else {
                         for(Map.Entry<String,String> entry : parameters.entrySet()){
                             if(entry.getKey().equals(apiMethodInfo.getApiParameters())){
+                                this.sqlParameters.put(entry.getKey(),entry.getValue());
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }*/
+
+    /**
+     * apiMethod 参数验证
+     * @param apiMethod  方法名
+     * @param parameters Url传入参数
+     * @return
+     * */
+    private boolean exitApiMethod(String apiMethod, Map<String,String> parameters) {
+        List<ApiMethodInfo> apiMethodInfos = apiMethodInfoDao.apiMethodInfoList();
+        for (ApiMethodInfo apiMethodInfo:apiMethodInfos){
+            if(apiMethodInfo.getApiName().equals(apiMethod)){
+                this.apiMethodInfo = apiMethodInfo;
+                //参数验证
+                if(!isNull(apiMethodInfo.getApiParameters())){
+                    String[] ary = apiMethodInfo.getApiParameters().split(",");
+                    for (int i = 0;i<ary.length;i++){
+                        for(Map.Entry<String,String> entry : parameters.entrySet()){
+                            if(entry.getKey().equals(ary[i])){
                                 this.sqlParameters.put(entry.getKey(),entry.getValue());
                             }
                         }

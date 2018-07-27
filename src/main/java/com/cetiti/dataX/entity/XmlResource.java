@@ -1,13 +1,15 @@
 package com.cetiti.dataX.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class XmlResource {
+public class XmlResource implements Serializable {
+    private static final long serialVersionUID = 5791665416405403464L;
     private String categoryId;
     private String mapperUrl;
     private String nameSpace;
     private String iconName;
-    private long sqlId;
+    private Long sqlId;
     private String provider;
     private String description;
     private List<ApiMethodInfo> apiMethodInfos;
@@ -44,11 +46,11 @@ public class XmlResource {
         this.iconName = iconName;
     }
 
-    public long getSqlId() {
+    public Long getSqlId() {
         return sqlId;
     }
 
-    public void setSqlId(long sqlId) {
+    public void setSqlId(Long sqlId) {
         this.sqlId = sqlId;
     }
 

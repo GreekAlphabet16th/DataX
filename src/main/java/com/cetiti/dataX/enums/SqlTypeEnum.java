@@ -1,20 +1,20 @@
 package com.cetiti.dataX.enums;
 
-public enum SqlType {
+public enum SqlTypeEnum {
     MYSQL("mysql",1),
     ORACLE("oracle",2);
 
     private String value;
     private int num;
-    private SqlType(String value, int num){
+    SqlTypeEnum(String value, int num){
         this.value = value;
         this.num = num;
     }
 
     public static String getValue(int num) {
-        for(SqlType sqlType : SqlType.values()){
-            if(sqlType.getNum() == num){
-                return sqlType.value;
+        for(SqlTypeEnum sqlTypeEnum : SqlTypeEnum.values()){
+            if(sqlTypeEnum.getNum() == num){
+                return sqlTypeEnum.value;
             }
         }
         return null;

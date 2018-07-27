@@ -1,6 +1,9 @@
 package com.cetiti.dataX.entity;
 
-public class ApiMethodInfo {
+import java.io.Serializable;
+
+public class ApiMethodInfo implements Serializable {
+    private static final long serialVersionUID = -7125465369906143441L;
     private String apiId;
     private String apiName;
     private String selectId;

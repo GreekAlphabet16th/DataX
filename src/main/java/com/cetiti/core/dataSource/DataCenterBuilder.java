@@ -2,25 +2,19 @@ package com.cetiti.core.dataSource;
 
 import com.cetiti.core.support.UUIDGenerator;
 import com.cetiti.dataX.entity.*;
-import com.cetiti.dataX.enums.Driver;
-import com.cetiti.dataX.enums.SqlType;
+import com.cetiti.dataX.enums.DriverEnum;
+import com.cetiti.dataX.enums.SqlTypeEnum;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.parsing.XPathParser;
-import org.apache.ibatis.scripting.xmltags.SqlNode;
-import org.apache.ibatis.scripting.xmltags.StaticTextSqlNode;
-import org.apache.ibatis.scripting.xmltags.TextSqlNode;
-import org.apache.ibatis.scripting.xmltags.XMLScriptBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.util.*;
 
 
@@ -72,8 +66,8 @@ public class DataCenterBuilder {
 
     private Properties dataCenterLoad(DataCenter dataCenter){
         Properties properties = new Properties();
-        properties.setProperty("sqlType", SqlType.getValue(dataCenter.getSqlType()));
-        properties.setProperty("driver", Driver.getValue(dataCenter.getSqlType()));
+        properties.setProperty("sqlType", SqlTypeEnum.getValue(dataCenter.getSqlType()));
+        properties.setProperty("driver", DriverEnum.getValue(dataCenter.getSqlType()));
         properties.setProperty("url", this.sqlUrl(dataCenter));
         properties.setProperty("userName", dataCenter.getUserName());
         properties.setProperty("passWord", dataCenter.getPassWord());
